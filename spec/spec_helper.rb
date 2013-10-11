@@ -23,3 +23,5 @@ RSpec.configure do |config|
     mocks.syntax = :expect
   end
 end
+
+require 'pry'
