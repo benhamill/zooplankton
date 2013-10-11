@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## 0.1.0
 
 * Basic functionality. - Ben Hamill
 
