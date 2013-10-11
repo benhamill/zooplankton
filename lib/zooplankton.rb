@@ -1,3 +1,5 @@
+require "rails"
+
 require "zooplankton/version"
 
 module Zooplankton
