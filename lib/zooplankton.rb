@@ -4,10 +4,18 @@ require "zooplankton/version"
 
 module Zooplankton
   class << self
-    def path_template_for(helper_name, params={})
+    def path_template_for(helper_name, query_params_or_required_params={}, required_params=nil)
       return unless named_routes.names.include?(helper_name)
 
-      unescape_template(expand_helper(helper_name, :path, params))
+      if query_params_or_required_params.respond_to?(:to_h)
+        query_params = []
+        required_params = query_params_or_required_params.to_h
+      else
+        query_params = Array(query_params_or_required_params)
+        required_params ||= {}
+      end
+
+      unescape_template(expand_helper(helper_name, :path, required_params))
     end
 
     def url_template_for(helper_name, params={})
