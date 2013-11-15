@@ -1,4 +1,4 @@
-# Zooplankton
+# Zooplankton [![Build Status](https://travis-ci.org/benhamill/zooplankton.png)](https://travis-ci.org/benhamill/zooplankton) [![Code Climate](https://codeclimate.com/github/benhamill/zooplankton.png)](https://codeclimate.com/github/benhamill/zooplankton)
 
 Zooplankton is a library for helping you turn Rails routes into
 [URI Template strings](http://tools.ietf.org/html/rfc6570). It's useful for
