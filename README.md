@@ -40,8 +40,31 @@ You can use it like this:
 # => '/post/{slug}'
 > Zooplankton.path_template_for(:comment)
 # => '/post/{slug}/comment/{comment_id}'
+```
+
+It also handles replacing some (or all) of the templated variables if you want
+to prepopulate some of them ahead of time:
+
+``` ruby
 > Zooplankton.path_template_for(:comment, slug: 'the-best-post-ever')
 # => '/post/the-best-post-ever/comment/{comment_id}'
+```
+
+And you can add some query parameters when you're generating the template, if
+you need:
+
+``` ruby
+> Zooplankton.path_template_for(:comment, :q, slug: 'the-best-post-ever')
+# => '/post/the-best-post-ever/comment/{comment_id}{?q}'
+> Zooplankton.path_template_for(:comment, %i(foo bar), slug: 'the-best-post-ever')
+# => '/post/the-best-post-ever/comment/{comment_id}{?foo,bar}'
+> Zooplankton.path_template_for(:comment, %i(foo bar))
+# => '/post/{slug}/comment/{comment_id}{?foo,bar}'
+```
+
+It'll generate URLs, too, not just paths.
+
+``` ruby
 > Zooplankton.url_template_for(:root)
 # => 'http://example.com/'
 > Zooplankton.url_template_for(:post)

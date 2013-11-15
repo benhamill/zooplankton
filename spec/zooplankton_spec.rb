@@ -23,6 +23,22 @@ describe Zooplankton do
       it "returns just the path" do
         expect(subject).to eq('/')
       end
+
+      context "with one query parameter" do
+        subject { Zooplankton.path_template_for(:root, :q) }
+
+        it "templateizes the query param" do
+          expect(subject).to eq('/{?q}')
+        end
+      end
+
+      context "with some query parameters" do
+        subject { Zooplankton.path_template_for(:root, %i(q f)) }
+
+        it "templateizes the query params" do
+          expect(subject).to eq('/{?q,f}')
+        end
+      end
     end
 
     context "for a route with one required param" do
@@ -30,6 +46,22 @@ describe Zooplankton do
 
       it "uses simple string expansion to describe the parameter" do
         expect(subject).to eq('/post/{slug}')
+      end
+
+      context "with one query parameter" do
+        subject { Zooplankton.path_template_for(:post, :q) }
+
+        it "templateizes the query param" do
+          expect(subject).to eq('/post/{slug}{?q}')
+        end
+      end
+
+      context "with some query parameters" do
+        subject { Zooplankton.path_template_for(:post, %i(q f)) }
+
+        it "templateizes the query params" do
+          expect(subject).to eq('/post/{slug}{?q,f}')
+        end
       end
     end
 
@@ -40,6 +72,22 @@ describe Zooplankton do
         it "uses simple string expansion to describe the parameters" do
           expect(subject).to eq('/post/{slug}/comment/{comment_id}')
         end
+
+        context "with one query parameter" do
+          subject { Zooplankton.path_template_for(:comment, :q) }
+
+          it "templateizes the query param" do
+            expect(subject).to eq('/post/{slug}/comment/{comment_id}{?q}')
+          end
+        end
+
+        context "with some query parameters" do
+          subject { Zooplankton.path_template_for(:comment, %i(q f)) }
+
+          it "templateizes the query params" do
+            expect(subject).to eq('/post/{slug}/comment/{comment_id}{?q,f}')
+          end
+        end
       end
 
       context "with one supplied parameter value" do
@@ -47,6 +95,22 @@ describe Zooplankton do
 
         it "uses simple string expansion to describe the parameters" do
           expect(subject).to eq('/post/post-slug/comment/{comment_id}')
+        end
+
+        context "with one query parameter" do
+          subject { Zooplankton.path_template_for(:comment, :q, slug: 'post-slug') }
+
+          it "templateizes the query param" do
+            expect(subject).to eq('/post/post-slug/comment/{comment_id}{?q}')
+          end
+        end
+
+        context "with some query parameters" do
+          subject { Zooplankton.path_template_for(:comment, %i(q f), slug: 'post-slug') }
+
+          it "templateizes the query params" do
+            expect(subject).to eq('/post/post-slug/comment/{comment_id}{?q,f}')
+          end
         end
       end
     end
