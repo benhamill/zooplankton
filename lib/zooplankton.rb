@@ -15,7 +15,10 @@ module Zooplankton
         required_params ||= {}
       end
 
-      unescape_template(expand_helper(helper_name, :path, required_params))
+      escaped_template_without_query_params = expand_helper(helper_name, :path, required_params)
+      escaped_template = append_query_params(escaped_template_without_query_params, query_params)
+
+      unescape_template(escaped_template)
     end
 
     def url_template_for(helper_name, params={})
@@ -25,6 +28,12 @@ module Zooplankton
     end
 
     private
+
+    def append_query_params(template, query_params)
+      return template unless query_params.any?
+
+      "#{template}{?#{query_params.join(',')}}"
+    end
 
     def expand_helper(helper_name, path_or_url, params)
       helper_method = "#{helper_name}_#{path_or_url}"
