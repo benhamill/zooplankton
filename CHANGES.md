@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## 1.0.0
 
 * Added ability to append query parameters to your templates. - Ben Hamill
 
