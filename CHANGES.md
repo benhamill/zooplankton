@@ -1,6 +1,6 @@
 # Changes
 
-## Unlreleased
+## 1.1.0
 
 * Added supplied query parameter handling, including the use of continuation
   marker. - Ben Hamill
