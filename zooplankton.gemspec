@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["git-commits@benhamill.com"]
   spec.description   = %q{A library for turning Rails routes into URI Templates, like maybe for HAL.}
   spec.summary       = %q{A library for turning Rails routes into URI Templates.}
-  spec.homepage      = "https://github.com/benhamill/zooplankton#zooplankton"
+  spec.homepage      = "https://github.com/benhamill/zooplankton#readme"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
