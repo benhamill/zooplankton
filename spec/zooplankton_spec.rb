@@ -112,6 +112,14 @@ describe Zooplankton do
             expect(subject).to eq('/post/post-slug/comment/{comment_id}{?q,f}')
           end
         end
+
+        context "with some query parameters that are supplied" do
+          subject { Zooplankton.path_template_for(:comment, %i(q f), slug: 'post-slug', q: 'find me') }
+
+          it "templateizes the query params" do
+            expect(subject).to eq('/post/post-slug/comment/{comment_id}?q=find me{&f}')
+          end
+        end
       end
     end
   end

@@ -62,6 +62,13 @@ you need:
 # => '/post/{slug}/comment/{comment_id}{?foo,bar}'
 ```
 
+If you supply a query parameter for replacement, it'll denote a continuation:
+
+``` ruby
+> Zooplankton.path_template_for(:comment, %i(foo bar), slug: 'the-best-post-ever', bar: 'baz')
+# => '/post/the-best-post-ever/comment/{comment_id}?bar=baz{&foo}'
+```
+
 It'll generate URLs, too, not just paths.
 
 ``` ruby
