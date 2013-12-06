@@ -1,23 +1,14 @@
-# Zooplankton [![Build Status](https://travis-ci.org/benhamill/zooplankton.png)](https://travis-ci.org/benhamill/zooplankton) [![Code Climate](https://codeclimate.com/github/benhamill/zooplankton.png)](https://codeclimate.com/github/benhamill/zooplankton)
+# Zooplankton
+
+[![Build Status](https://travis-ci.org/benhamill/zooplankton.png)](https://travis-ci.org/benhamill/zooplankton) [![Code Climate](https://codeclimate.com/github/benhamill/zooplankton.png)](https://codeclimate.com/github/benhamill/zooplankton)
+
+[Zooplankton](http://en.wikipedia.org/wiki/Zooplankton) are the kind of
+plankton that are animals (as opposed to phytoplankton, which are plants).
 
 Zooplankton is a library for helping you turn Rails routes into
 [URI Template strings](http://tools.ietf.org/html/rfc6570). It's useful for
 helping yourself generate the `_links` part of
 [HAL](http://stateless.co/hal_specification.html), for example.
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'zooplankton'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install zooplankton
 
 ## Usage
 
@@ -26,47 +17,67 @@ Given a route file like this:
 ```ruby
 SomeApp::Application.routes.draw do
   root 'root#index'
-  get '/post/:slug', to: 'posts#show', as: :post
-  get '/post/:slug/comment/:comment_id', to: 'commendts#show', as: :comment
+  get '/posts/:slug', to: 'posts#show', as: :post
+  get '/posts/:slug/comments', to: 'comments#index', as: :comments
+  get '/posts/:slug/comments/:comment_id', to: 'commendts#show', as: :comment
 end
 ```
 
-You can use it like this:
+Without Zooplankton, you might end up generating a URI template for a route by
+abusing Rails's url helpers like this:
+
+```ruby
+post_path(slug: "{slug}")
+# => '/posts/{slug}'
+comment_path(slug: "{slug}", comment_id: "{comment_id}")
+# => '/posts/{slug}/comments/{comment_id}'
+```
+
+If you needed to include query parameters in your template, you'd have an even
+harder time. Something like:
+
+```ruby
+"#{comments_path(slug: "{slug}")}{?page,page_size}"
+# => '/posts/{slug}/comments{?page,page_size}'
+```
+
+With Zooplankton, you can use it like this:
 
 ```ruby
 > Zooplankton.path_template_for(:root)
 # => '/'
 > Zooplankton.path_template_for(:post)
-# => '/post/{slug}'
+# => '/posts/{slug}'
 > Zooplankton.path_template_for(:comment)
-# => '/post/{slug}/comment/{comment_id}'
+# => '/posts/{slug}/comments/{comment_id}'
 ```
 
-It also handles replacing some (or all) of the templated variables if you want
-to prepopulate some of them ahead of time:
+It also handles replacing some (or all, though you might decide to use a Rails
+url helper at that point) of the templated variables if you want to prepopulate
+some of them ahead of time:
 
 ``` ruby
 > Zooplankton.path_template_for(:comment, slug: 'the-best-post-ever')
-# => '/post/the-best-post-ever/comment/{comment_id}'
+# => '/posts/the-best-post-ever/comments/{comment_id}'
 ```
 
 And you can add some query parameters when you're generating the template, if
 you need:
 
 ``` ruby
-> Zooplankton.path_template_for(:comment, :q, slug: 'the-best-post-ever')
-# => '/post/the-best-post-ever/comment/{comment_id}{?q}'
-> Zooplankton.path_template_for(:comment, %i(foo bar), slug: 'the-best-post-ever')
-# => '/post/the-best-post-ever/comment/{comment_id}{?foo,bar}'
-> Zooplankton.path_template_for(:comment, %i(foo bar))
-# => '/post/{slug}/comment/{comment_id}{?foo,bar}'
+> Zooplankton.path_template_for(:comments, :page, slug: 'the-best-post-ever')
+# => '/posts/the-best-post-ever/comments{?page}'
+> Zooplankton.path_template_for(:comments, %i(page page_size), slug: 'the-best-post-ever')
+# => '/posts/the-best-post-ever/comments{?page,page_size}'
+> Zooplankton.path_template_for(:comments, %i(page page_size))
+# => '/posts/{slug}/comments{?page,page_size}'
 ```
 
 If you supply a query parameter for replacement, it'll denote a continuation:
 
 ``` ruby
-> Zooplankton.path_template_for(:comment, %i(foo bar), slug: 'the-best-post-ever', bar: 'baz')
-# => '/post/the-best-post-ever/comment/{comment_id}?bar=baz{&foo}'
+> Zooplankton.path_template_for(:comments, %i(page page_size), slug: 'the-best-post-ever', page: 1)
+# => '/posts/the-best-post-ever/comments?page=1{&page_size}'
 ```
 
 It'll generate URLs, too, not just paths.
@@ -75,7 +86,7 @@ It'll generate URLs, too, not just paths.
 > Zooplankton.url_template_for(:root)
 # => 'http://example.com/'
 > Zooplankton.url_template_for(:post)
-# => 'http://example.com/post/{slug}'
+# => 'http://example.com/posts/{slug}'
 ```
 
 ## Contributing
