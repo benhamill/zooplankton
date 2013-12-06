@@ -1,14 +1,14 @@
 # Zooplankton
 
-[![Build Status](https://travis-ci.org/benhamill/zooplankton.png)](https://travis-ci.org/benhamill/zooplankton) [![Code Climate](https://codeclimate.com/github/benhamill/zooplankton.png)](https://codeclimate.com/github/benhamill/zooplankton)
+[![Build Status](https://travis-ci.org/benhamill/zooplankton.png)](https://travis-ci.org/benhamill/zooplankton)
+[![Code Climate](https://codeclimate.com/github/benhamill/zooplankton.png)](https://codeclimate.com/github/benhamill/zooplankton)
 
 [Zooplankton](http://en.wikipedia.org/wiki/Zooplankton) are the kind of
 plankton that are animals (as opposed to phytoplankton, which are plants).
 
-Zooplankton is a library for helping you turn Rails routes into
-[URI Template strings](http://tools.ietf.org/html/rfc6570). It's useful for
-helping yourself generate the `_links` part of
-[HAL](http://stateless.co/hal_specification.html), for example.
+Zooplankton is a library for helping you turn Rails routes into [URI Template
+strings](#uti-template-lolwut). It's useful for helping yourself generate the
+`_links` part of [HAL](http://stateless.co/hal_specification.html), for example.
 
 ## Usage
 
@@ -88,6 +88,44 @@ It'll generate URLs, too, not just paths.
 > Zooplankton.url_template_for(:post)
 # => 'http://example.com/posts/{slug}'
 ```
+
+## URI Templates LOLWUT
+
+[URI Templates](http://tools.ietf.org/html/rfc6570) are a notation for teaching
+machines how to build URIs. They're basically rules for string interpolation.
+Zooplankton supports a small subset of all the notations, outlined here.
+
+### Simple String Expansion
+
+[RFC direct link](http://tools.ietf.org/html/rfc6570#section-3.2.2)
+
+This is the simplest part of URI Templates and is what Zooplankton uses for
+parameters that are part of the path of a URI. Basically, given a template like
+`"foo{var}baz"` and assuming you have a value of `'bar'` for `var`, you'd end up
+with `"foobarbaz"`.
+
+### Form-Style Query Expansion
+
+[RFC direct link](http://tools.ietf.org/html/rfc6570#section-3.2.8)
+
+This expansion is for telling a computer to build a query string. Something like
+`"name{?first,last}" with values like in the hash `{first: 'ben', last:
+'hamill'}` would expand to `"name?first=ben&last=hamill"`. Zooplankton will use
+this when it's appropriate for building query strings.
+
+### Form-Style Query Continuation
+
+[RFC direct link](http://tools.ietf.org/html/rfc6570#section-3.2.9)
+
+This expansion is for telling a computer to finish off a query string that
+you've already started. Basically, it's like a query expansion, but instructs
+the computer to use a starting `&`, rather than a `?`. So `"name{&first,last}"`
+with values like `{first: 'ben', last: 'hamill'}` would end up as
+`"name&first=ben&last=hamill"`, but the greatest usefulness is for something
+like `"name?middle=dale{?first,last}"` which would end up as
+`"name?middle=dale&first=ben&last=hamill"`. Zooplankton will use this when it's
+appropriate for building query strings.
+
 
 ## Contributing
 
