@@ -7,7 +7,7 @@
 plankton that are animals (as opposed to phytoplankton, which are plants).
 
 Zooplankton is a library for helping you turn Rails routes into [URI Template
-strings](#uti-template-lolwut). It's useful for helping yourself generate the
+strings](#uri-templates-lolwut). It's useful for helping yourself generate the
 `_links` part of [HAL](http://stateless.co/hal_specification.html), for example.
 
 ## Usage
