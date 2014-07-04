@@ -15,7 +15,7 @@ module Zooplankton
     private
 
     def parse_params(*args)
-      if args.first.respond_to?(:to_h)
+      if args.first.respond_to?(:to_h) && !args.first.is_a?(Array)
         query_params = []
         supplied_params = args.first.to_h
       else

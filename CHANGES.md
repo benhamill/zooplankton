@@ -1,5 +1,9 @@
 # Changes
 
+## Unreleased
+
+* Added support for Ruby 2.1. - Ben Weiner
+
 ## 1.1.0
 
 * Added supplied query parameter handling, including the use of continuation
