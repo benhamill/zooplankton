@@ -27,9 +27,9 @@ Without Zooplankton, you might end up generating a URI template for a route by
 abusing Rails's url helpers like this:
 
 ```ruby
-post_path(slug: "{slug}")
+CGI.unescape post_path(slug: "{slug}")
 # => '/posts/{slug}'
-comment_path(slug: "{slug}", comment_id: "{comment_id}")
+CGI.unescape comment_path(slug: "{slug}", comment_id: "{comment_id}")
 # => '/posts/{slug}/comments/{comment_id}'
 ```
 
@@ -37,7 +37,7 @@ If you needed to include query parameters in your template, you'd have an even
 harder time. Something like:
 
 ```ruby
-"#{comments_path(slug: "{slug}")}{?page,page_size}"
+CGI.unescape "#{comments_path(slug: "{slug}")}{?page,page_size}"
 # => '/posts/{slug}/comments{?page,page_size}'
 ```
 
