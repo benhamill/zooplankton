@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## 1.2.0
 
 * Added support for Ruby 2.1. - Ben Weiner
 * Better examples in `README`. - Filippos Vasilakis
