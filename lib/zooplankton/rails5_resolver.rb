@@ -8,13 +8,16 @@ module Zooplankton
 
     def generate(helper_method, helper_name, params = {})
       route = named_routes[helper_name]
-      templated_params = route.required_parts.map do |required_part|
-        params.fetch(required_part) { "{#{required_part}}" }
-      end
-      routes.url_helpers.public_send(helper_method, *templated_params)
+      routes.url_helpers.public_send(helper_method, *tokenized_params_for(route, params))
     end
 
     private
+
+    def tokenized_params_for(route, params)
+      route.required_parts.map do |required_part|
+        params.fetch(required_part) { "{#{required_part}}" }
+      end
+    end
 
     def names
       named_routes.names
