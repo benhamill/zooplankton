@@ -1,11 +1,7 @@
 require 'action_controller/metal/strong_parameters'
 
 module Zooplankton
-  class Rails5Resolver
-    def initialize(routes)
-      @routes = routes
-    end
-
+  class Rails5Resolver < Resolver
     def has_route?(name)
       names.include?(name)
     end
@@ -19,7 +15,6 @@ module Zooplankton
     end
 
     private
-    attr_reader :routes
 
     def names
       named_routes.names

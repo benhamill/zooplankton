@@ -14,5 +14,12 @@ module Zooplankton
         klass.new(Rails.application.routes)
       )
     end
+
+    def initialize(routes)
+      @routes = routes
+    end
+
+    private
+    attr_reader :routes
   end
 end
