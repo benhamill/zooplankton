@@ -3,6 +3,9 @@ require "zooplankton/resolver"
 
 module Zooplankton
   class Parser
+    AMPERSAND = '&'.freeze
+    QUESTION_MARK = '?'.freeze
+
     def path_template_for(helper_name, query_params={}, supplied_params=nil)
       build_template(:path, helper_name, *parse_params(query_params, supplied_params))
     end
@@ -34,27 +37,29 @@ module Zooplankton
       unescape_template(escaped_template)
     end
 
-    def append_query_params(template, query_params, supplied_params)
-      return template unless query_params.any?
+    def append_query_params(template, defined_keys, supplied_params)
+      return template unless defined_keys.any?
 
-      supplied_query_params = query_params & supplied_params.keys
-      supplied_query_string = ''
+      supplied_keys = defined_keys & supplied_params.keys
+      not_supplied_keys = defined_keys - supplied_params.keys
 
-      if supplied_query_params.any?
-        continuation_or_expansion = '&'
+      segments = []
+      init_symbol = QUESTION_MARK
 
-        supplied_query_string << '?'
-
-        supplied_query_string << supplied_query_params.map do |key|
-          "#{key.to_s}=#{URI.encode(supplied_params[key].to_s)}"
-        end.join('&')
-
-        query_params = query_params - supplied_query_params
-      else
-        continuation_or_expansion = '?'
+      if supplied_keys.any?
+        segments << supplied_keys.map{|k| escaped_pair(k, supplied_params[k]) }.join(AMPERSAND)
       end
 
-      "#{template}#{supplied_query_string}{#{continuation_or_expansion}#{query_params.join(',')}}"
+      if not_supplied_keys.any?
+        init_symbol, sep = if segments.size > 0
+          [QUESTION_MARK, AMPERSAND]
+        else
+          ['', QUESTION_MARK]
+        end
+        segments << "{#{sep}#{not_supplied_keys.join(",")}}"
+      end
+
+      "#{template}#{init_symbol}#{segments.join}"
     end
 
     def expand_helper(helper_name, path_or_url, params)
@@ -65,6 +70,10 @@ module Zooplankton
 
     def resolver
       @resolver ||= Resolver.instance
+    end
+
+    def escaped_pair(key, value)
+      [key, URI.encode(value.to_s)].join('=')
     end
 
     def unescape_template(template)

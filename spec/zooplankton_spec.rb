@@ -39,6 +39,14 @@ describe Zooplankton do
           expect(subject).to eq('/{?q,f}')
         end
       end
+
+      context "with all query parameters" do
+        subject { Zooplankton.path_template_for(:root, %w(s q aa), "s" => "foo", "q" => "bar", "aa" => "hello", "ignore" => "me") }
+
+        it "templateizes all query params with the right separators" do
+          expect(subject).to eq('/?s=foo&q=bar&aa=hello')
+        end
+      end
     end
 
     context "for a route with one required param" do
