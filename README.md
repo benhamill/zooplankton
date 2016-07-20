@@ -126,6 +126,20 @@ like `"name?middle=dale{?first,last}"` which would end up as
 `"name?middle=dale&first=ben&last=hamill"`. Zooplankton will use this when it's
 appropriate for building query strings.
 
+## Testing
+
+```
+rake spec
+```
+
+This library uses the [Appraisal](https://github.com/thoughtbot/appraisal) gem to test against multiple versions of Rails. You can run them individually with
+
+```
+appraisal rails4 rake spec
+appraisal rails5 rake spec
+```
+
+Look in `./Appraisals` for available Rails versions.
 
 ## Contributing
 
