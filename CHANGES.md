@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## 1.3.0
 
 * Support Rails 5 - Ismael Celis
 * Fix bug where supplying all query parameters would leave in a trailing `{&}` - Ismael Celis
