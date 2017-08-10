@@ -4,6 +4,25 @@
 # loaded once.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+#
+# A Rails app needs to be defined _before_ requiring this gem
+require "rails"
+module Plankton
+  class Application < Rails::Application
+  end
+end
+
+Plankton::Application.routes.tap do |routes|
+  routes.default_url_options[:host] = 'http://example.com'
+  routes.draw do
+    root 'root#index'
+    get '/post/:slug', to: 'posts#show', as: :post
+    get '/post/:slug/comment/:comment_id', to: 'commendts#show', as: :comment
+  end
+end
+
+require 'zooplankton'
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true

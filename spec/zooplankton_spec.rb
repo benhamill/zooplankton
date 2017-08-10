@@ -1,19 +1,4 @@
 require 'spec_helper'
-require 'zooplankton'
-
-module Plankton
-  class Application < Rails::Application
-  end
-end
-
-Plankton::Application.routes.tap do |routes|
-  routes.default_url_options[:host] = 'http://example.com'
-  routes.draw do
-    root 'root#index'
-    get '/post/:slug', to: 'posts#show', as: :post
-    get '/post/:slug/comment/:comment_id', to: 'commendts#show', as: :comment
-  end
-end
 
 describe Zooplankton do
   describe ".path_template_for" do
