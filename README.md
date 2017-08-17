@@ -10,6 +10,14 @@ Zooplankton is a library for helping you turn Rails routes into [URI Template
 strings](#uri-templates-lolwut). It's useful for helping yourself generate the
 `_links` part of [HAL](http://stateless.co/hal_specification.html), for example.
 
+## Installation
+
+Add it to your Gemfile:
+
+```ruby
+gem 'zooplankton'
+```
+
 ## Usage
 
 Given a route file like this:

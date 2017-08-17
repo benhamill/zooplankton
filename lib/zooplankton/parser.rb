@@ -1,10 +1,13 @@
-require "rails"
 require "zooplankton/resolver"
 
 module Zooplankton
   class Parser
     AMPERSAND = '&'.freeze
     QUESTION_MARK = '?'.freeze
+
+    def initialize(resolver = Resolver.instance)
+      @resolver = resolver
+    end
 
     def path_template_for(helper_name, query_params={}, supplied_params=nil)
       build_template(:path, helper_name, *parse_params(query_params, supplied_params))
@@ -15,6 +18,7 @@ module Zooplankton
     end
 
     private
+    attr_reader :resolver
 
     def parse_params(*args)
       if args.first.respond_to?(:to_h) && !args.first.is_a?(Array)
@@ -66,10 +70,6 @@ module Zooplankton
       helper_method = "#{helper_name}_#{path_or_url}"
 
       resolver.generate(helper_method, helper_name, params)
-    end
-
-    def resolver
-      @resolver ||= Resolver.instance
     end
 
     def escaped_pair(key, value)
