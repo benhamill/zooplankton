@@ -1,4 +1,5 @@
 require 'spec_helper'
+Zooplankton.setup!
 
 describe Zooplankton do
   describe ".path_template_for" do

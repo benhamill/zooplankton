@@ -15,15 +15,7 @@ strings](#uri-templates-lolwut). It's useful for helping yourself generate the
 Add it to your Gemfile:
 
 ```ruby
-gem 'zooplankton', require: false
-```
-
-It's important that you use `require: false`. This is because Zooplankton needs to be loaded _after_ the Rails application has been defined.
-
-Now require it in an initializer in your Rails app, ex. `config/initializers/zooplankton.rb`
-
-```ruby
-require 'zooplankton'
+gem 'zooplankton'
 ```
 
 ## Usage
